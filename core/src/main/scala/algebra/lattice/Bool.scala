@@ -27,10 +27,11 @@ trait Bool[@sp(Int, Long) A] extends Any with Heyting[A] with GenBool[A] { self 
   def imp(a: A, b: A): A = or(complement(a), b)
   def without(a: A, b: A): A = and(a, complement(b))
 
-  // xor is already defined in both Heyting and GenBool.
+  // These are already defined in both Heyting and GenBool.
   // In Bool, the definitions coincide, so we just use one of them.
-  override def xor(a: A, b: A): A =
-    or(without(a, b), without(b, a))
+  override def meet(a: A, b: A): A = super[GenBool].meet(a, b)
+  override def join(a: A, b: A): A = super[GenBool].join(a, b)
+  override def xor(a: A, b: A): A  = super[GenBool].xor(a, b)
 
   override def dual: Bool[A] = new DualBool(this)
 
