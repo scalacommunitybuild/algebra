@@ -29,9 +29,10 @@ trait Bool[@sp(Int, Long) A] extends Any with Heyting[A] with GenBool[A] { self 
 
   // These are already defined in both Heyting and GenBool.
   // In Bool, the definitions coincide, so we just use one of them.
-  override def meet(a: A, b: A): A = super[GenBool].meet(a, b)
-  override def join(a: A, b: A): A = super[GenBool].join(a, b)
-  override def xor(a: A, b: A): A  = super[GenBool].xor(a, b)
+  // NOTE: delegating to `super[Genbool]` does not work (scalac bug re: super and specialized?)
+  override def meet(a: A, b: A): A = and(a, b)
+  override def join(a: A, b: A): A = or(a, b)
+  override def xor(a: A, b: A): A  = or(without(a, b), without(b, a))
 
   override def dual: Bool[A] = new DualBool(this)
 
